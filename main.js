@@ -21,7 +21,7 @@ function showDef(){
         defContent = document.createTextNode(i + 1 + '. ' + defs[i]);
         paragraph.appendChild(defContent);
         defBlock.appendChild(paragraph)
-        if (i < 4){
+        if (i > 2){
             break;
         }
     }
