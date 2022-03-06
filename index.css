@@ -5,9 +5,6 @@ body {
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-header {
-    margin-bottom: 50px;
-}
 .letterBlock {
     border-bottom: 5px solid black;
     padding: 5px;
