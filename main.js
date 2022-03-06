@@ -1,10 +1,29 @@
 var word = 0;
+var defWord = 0;
 var display = document.getElementById('gameBlock');
+var defs = [];
 var guessed = new Set();
 var letter = [];
 var wordSet;
-var loss = 0;
+var loss = 3;
 var gameOver = 0;
+var definition = 1;
+
+function showDef(){
+    var defBlock = document.getElementById('defBlock');
+    defBlock.innerHTML = '<h3>Definitions:</h3>';
+    for (i=0; i<defs.length; i++){
+        paragraph = document.createElement('p');
+        defContent = document.createTextNode(i + 1 + '. ' + defs[i]);
+        paragraph.appendChild(defContent);
+        defBlock.appendChild(paragraph)
+    }
+
+}
+
+function restart(){
+    location.reload()
+}
 
 function setupBoard(){
 
@@ -14,15 +33,28 @@ function setupBoard(){
         let letterBlock = document.createElement('div');
         letterBlock.classList.add('letterBlock');
         letterBlock.classList.add('dontShowLetter');
-        letterBlock.innerHTML= word[i]
+        letterBlock.innerHTML= '<p>' + word[i] + '</p>'
         letterBlock.setAttribute('id','let-'+i);
         wordBlock.appendChild(letterBlock);
         
     }
     display.appendChild(wordBlock);
-    guessedBlock = document.createElement('div');
+    let guessedBlock = document.createElement('div');
     guessedBlock.setAttribute('id','guessedBlock');
     display.appendChild(guessedBlock);
+    let controlsBlock = document.createElement('div');
+    controlsBlock.setAttribute('id','controlsBlock');
+    let buttons = ['Restart', 'Hint'];
+    let actions = ['restart()','showDef()'];
+
+    for (i=0;i < buttons.length;i++){
+        let button = document.createElement('button');
+        button.setAttribute('onclick',actions[i]);
+        button.innerHTML = buttons[i];
+        controlsBlock.appendChild(button);
+    }
+    display.appendChild(controlsBlock);
+
 }
 
 function onPress(event){
@@ -50,10 +82,12 @@ function onPress(event){
                 }
             } else{
                 let letterBlock = document.createElement('div');
+                let imageBlock = document.getElementById('image');
                 letterBlock.innerHTML = guess;
                 guessedBlock.appendChild(letterBlock);
                 loss +=1;
-                if (loss === 6){
+                imageBlock.setAttribute('src','images/black/'+loss+'.png');
+                if (loss === 10){
                     console.log('You Lost :(');
                     endGame(0);
                     return;
@@ -104,42 +138,63 @@ function validateLetter(string,guessed){
     } else return 0;
 }
 
-function startGame(request){
-    request.onreadystatechange = function() {
-        if (this.readyState === 4) {
-            word = this.responseText.slice(2,-2).toUpperCase();
-            console.log(word)
-            word = word.split('');
-            wordSet = new Set(word)
-            setupBoard();
-            document.addEventListener('keypress', onPress)
-        }
-    }
-
-}
 
 function getWord(){
     let request = new XMLHttpRequest();
     request.open('GET','https://random-word-api.herokuapp.com/word?number=1');
     request.send();
-    return request;
+    request.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            word = this.responseText.slice(2,-2).toUpperCase();
+            defWord = word;
+            console.log(word)
+            word = word.split('');
+            getDefinition();
+            wordSet = new Set(word);
+        }
+    }
+}
+
+function getDefinition(){
+    let request = new XMLHttpRequest();
+    request.open('GET','https://api.dictionaryapi.dev/api/v2/entries/en/'+defWord);
+    request.send();
+    request.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            obj = JSON.parse(request.responseText);
+            console.log(obj);
+            if (!(obj['title']) && (obj[0].word == defWord.toLowerCase())){
+                meanings = obj[0].meanings
+                for (i = 0; i < meanings.length; i++){
+                    definitions = meanings[i].definitions
+                    for (j=0; j < definitions.length; j++){
+                        definition = definitions[j].definition;
+                        console.log('Definition: '+ definition);
+                        defs.push(definition);
+                    }
+                }
+                setupBoard();
+                document.addEventListener('keypress', onPress)
+            }
+            else{
+                console.log(obj['title'])
+                getWord();
+            }
+        }
+    }
 }
 function play(){
-    var request = getWord();
-    /**
-     * Code to validate word goes here
-     */
-    startGame(request);
+    getWord();
 }
 
 play();
 
 /** 
- * Add Divs for each letter
- * Finish Event listener => change list as keys pressed
- * Hide the letters (either with CSS or Javascript (Modify a list of dashes))
- * Add Incorrect Letters Display
- * Win and Lose Conditions
+ * Add Divs for each letter ---
+ * Finish Event listener => change list as keys pressed ---
+ * Hide the letters (either with CSS or Javascript (Modify a list of dashes)) ---
+ * Add Incorrect Letters Display ---
+ * Win and Lose Conditions ---
  * Hints (Dictionary Defintion API. Filter words that don't have a dictionary definition.)
  * Restart Button (Clearing old game and getting new word)
  */
