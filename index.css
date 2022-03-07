@@ -5,71 +5,22 @@ body {
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+header{
+    font-family: 'Permanent Marker', cursive;
+}
+
+header h1{
+    font-size: 500%;
+    margin: 0 0 10px 0;
+}
+
 footer{
     position: bottom;
     margin-top: 10px;
     padding-top: 20px;
     border-top: 2px solid black;
     width: 100%;
-}
-.letterBlock {
-    border-bottom: 5px solid black;
-    padding: 5px;
-    margin: 1%;
-    height: 40px;
-    width: 40px;
-}
-
-.letterBlock p{
-    height: auto;
-    margin: 0;
-}
-#wordBlock {
-    display: flex;
-    flex-direction: row;
-    font-size: 200%;
-    width:fit-content;
-    height: fit-content;
-    justify-content: center;
-
-}
-
-#display {
-    align-items: center;
-}
-
-.dontShowLetter p{
-    visibility: hidden;
-}
-
-#guessedBlock {
-    display: flex;
-    flex-direction: row;
-    font-size: 150%;
-    align-items: center;
-    justify-content: center;
-}
-
-#guessedBlock div{
-    border: 2.5px solid black;
-    margin: 5px;
-    width: 30px;
-    height: 30px;
-}
-
-.bigBoldText {
-    font-size: 300%;
-    font-weight: bold;
-}
-
-#image {
-    height: 300px;
-    width: auto;
-    transition: 1s;
-}
-
-#defBlock {
-    text-align: left;
 }
 
 button {
@@ -95,4 +46,76 @@ button {
     background-color: #559ec0;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
+}
+.letterBlock {
+    border-bottom: 5px solid #63b7df;
+    padding: 5px;
+    margin: 1%;
+    height: 40px;
+    width: 40px;
+}
+
+.letterBlock p{
+    height: auto;
+    margin: 0;
+}
+#wordBlock {
+    display: flex;
+    flex-direction: row;
+    font-size: 200%;
+    height: fit-content;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 0;
+
+}
+
+#display {
+    align-items: center;
+}
+
+.dontShowLetter p{
+    visibility: hidden;
+}
+
+.showLetter {
+    color: #559ec0;
+}
+
+#guessedBlock {
+    display: flex;
+    flex-direction: row;
+    font-size: 150%;
+    align-items: center;
+    justify-content: center;
+}
+
+#guessedBlock div{
+    border: 2.5px solid red;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    color: #ff4242;
+}
+
+.bigBoldText {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+#image {
+    height: 300px;
+    width: auto;
+    transition: 1s;
+}
+
+#defBlock {
+    text-align: left;
+}
+
+#controlsBlock{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
   }

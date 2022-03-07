@@ -79,7 +79,7 @@ function onPress(event){
                 for (i=0; i < word.length; i++){
                     if (word[i] === guess){
                         let letterBlock = document.getElementById('let-'+i);
-                        letterBlock.classList.replace('dontShowLetter','show');
+                        letterBlock.classList.replace('dontShowLetter','showLetter');
                     }
                 }
                 /**Game has been won */
