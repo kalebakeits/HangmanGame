@@ -1,3 +1,4 @@
+Play the game here: http://kalebakeitshokile.co.uk/Projects/Hangman/
 # HangmanGame
 A simple browser Hangman game written in Javascript
 
