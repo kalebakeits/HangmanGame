@@ -2,6 +2,7 @@
 var word = 0;
 var defWord = 0; /**Copy of word as word later gets turned into an array */
 var display = document.getElementById('gameBlock'); /**div element where most game content is drawn */
+var body = document.getElementById('body')
 var defs = []; 
 var guessed = new Set(); 
 var letter = []; 
@@ -16,14 +17,11 @@ var definition = 1;
 function showDef(){
     var defBlock = document.getElementById('defBlock');
     defBlock.innerHTML = '<h3>Definitions:</h3>';
-    for (i=0; i<defs.length; i++){
+    for (i=0; i< 2; i++){
         paragraph = document.createElement('p');
         defContent = document.createTextNode(i + 1 + '. ' + defs[i]);
         paragraph.appendChild(defContent);
         defBlock.appendChild(paragraph)
-        if (i > 2){
-            break;
-        }
     }
 
 }
@@ -50,25 +48,27 @@ function setupBoard(){
     display.appendChild(guessedBlock);
     let controlsBlock = document.createElement('div');
     controlsBlock.setAttribute('id','controlsBlock');
-    let buttons = ['Restart', 'Hint'];
+    let buttons = ['restartButton', 'hintButton'];
     let actions = ['restart()','showDef()'];
 
     for (i=0;i < buttons.length;i++){
         let button = document.createElement('button');
         button.setAttribute('onclick',actions[i]);
-        button.innerHTML = buttons[i];
+        button.setAttribute('id',buttons[i]);
         controlsBlock.appendChild(button);
     }
-    display.appendChild(controlsBlock);
+    body.appendChild(controlsBlock);
+    mobileKeys();
 
 }
 /**Hande key presses*/
 function onPress(event){
     if (!(gameOver)){
         /**Get exact key pressed from the event */
-        let guess = event.key;
+        guess = event.key;
         guess = guess.toUpperCase();
-        console.log(guess);
+        crossOut = document.getElementById('let-'+guess)
+        crossOut.style.backgroundColor = 'grey'
         /**Validate the key */
         if (validateLetter(guess,guessed)){
             guessed.add(guess);
@@ -85,7 +85,6 @@ function onPress(event){
                 /**Game has been won */
                 if (wordSet.size === 0){
                     /** Game Has Been Won */
-                    console.log('You Won!!!');
                     endGame(1);
                     return;
                 }
@@ -95,12 +94,10 @@ function onPress(event){
                 let letterBlock = document.createElement('div');
                 let imageBlock = document.getElementById('image');
                 letterBlock.innerHTML = guess;
-                guessedBlock.appendChild(letterBlock);
                 loss +=1;
                 imageBlock.setAttribute('src','images/black/'+loss+'.png');
                 /**Game Lost */
                 if (loss === 10){
-                    console.log('You Lost :(');
                     endGame(0);
                     return;
                     
@@ -121,20 +118,27 @@ function endGame(cond){
     gameOver = 1;
     let endMessage = document.createElement('div');
     endMessage.classList.add('bigBoldText');
+    endMessage.classList.add('show','endMessage')
     /** Game Lost*/
     if (cond === 0){
         endMessage.innerHTML = 'You Lost :(';
+        endMessage.style.color = 'red'
         for (i=0; i < word.length; i++){
             let letterBlock = document.getElementById('let-'+i);
-            letterBlock.classList.replace('dontShowLetter','show');
+            letterBlock.classList.replace('dontShowLetter','showEnd');
         }
     }  
     /** Game Won */
     else{
-       endMessage.innerHTML = 'You Won!';
+        endMessage.style.color = 'green'
+        endMessage.innerHTML = 'You Won!';
     }
     showDef();
+    letWrapper.classList.add('hide')
     display.insertBefore(endMessage,display.firstChild);
+    endMessage.classList.replace('hide','show')
+    display.classList.add('moveDivMid')
+    defBlock.classList.add('moveDivDef')
 }
 /**
  * validate inputs to only accept A-Z and a-z letters
@@ -200,6 +204,44 @@ function getDefinition(){
             }
         }
     }
+}
+function handleMobileInput(let){
+    buttonClicked = document.getElementById('let-'+let);
+    onPress({key:let})
+}
+//Nake a keyboard for mobile
+function mobileKeys(){
+    r1 = ['Q','W','E','R','T','Y','U','I','O','P']
+    r2 = ['A','S','D','F','G','H','J','K','L']
+    r3 = ['Z','X','C','V','B','N','M']
+    letWrapper = document.getElementById('mobile-input')
+    letRow  = document.createElement('div')
+    for(i=0;i<r1.length;i++){
+        letterButton = document.createElement('button')
+        letterButton.innerHTML= r1[i]
+        letterButton.setAttribute('id','let-'+r1[i])
+        letterButton.setAttribute('onclick',`handleMobileInput("${r1[i]}")`)
+        letRow.appendChild(letterButton)
+    }
+    letWrapper.appendChild(letRow)
+    letRow  = document.createElement('div')
+    for(i=0;i<r2.length;i++){
+        letterButton = document.createElement('button')
+        letterButton.innerHTML= r2[i]
+        letterButton.setAttribute('id','let-'+r2[i])
+        letterButton.setAttribute('onclick',`handleMobileInput("${r2[i]}")`)
+        letRow.appendChild(letterButton)
+    }
+    letWrapper.appendChild(letRow)
+    letRow  = document.createElement('div')
+    for(i=0;i<r3.length;i++){
+        letterButton = document.createElement('button')
+        letterButton.innerHTML= r3[i]
+        letterButton.setAttribute('id','let-'+r3[i])
+        letterButton.setAttribute('onclick',`handleMobileInput("${r3[i]}")`)
+        letRow.appendChild(letterButton)
+    }
+    letWrapper.appendChild(letRow)
 }
 function play(){
     getWord();

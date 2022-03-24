@@ -10,18 +10,32 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id = 'body'>
     <header>
         <h1>Hangman</h1>
         <p>A Classic Word Guessing Game</p>
     </header>
-    <div id ='gameBlock' onload="main.js">
+    <div class="row mobileColumn" onload="main.js">
+    <div id="gameBlock">
         <div id = 'graphicBlock'>
             <img src="images/black/3.png" id="image">
         </div>
     </div>
+    <div id="otheGameBlock" class="column">
+    <div id="mobile-input"></div>
     <div id="defBlock"></div>
+    </div>
+    </div>
     <script src="main.js" type="text/javascript"></script>
     <footer>Created by Kaleba Keitshokile
+        <br>
+        <a href="https://www.flaticon.com/free-icons/refresh" title="refresh icons" target="_blank">
+            Refresh icons created by kosonicon - Flaticon
+        </a>
+        <br>
+        <a href="https://www.flaticon.com/free-icons/question" title="question icons" target="_blank">
+            Question icons created by Freepik - Flaticon
+        </a>
+
     </footer>
 </body> 
