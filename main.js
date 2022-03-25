@@ -17,7 +17,7 @@ var definition = 1;
 function showDef(){
     var defBlock = document.getElementById('defBlock');
     defBlock.innerHTML = '<h3>Definitions:</h3>';
-    for (i=0; i< 2; i++){
+    for (i=0; ((i< 2) && (defs[i])); i++){
         paragraph = document.createElement('p');
         defContent = document.createTextNode(i + 1 + '. ' + defs[i]);
         paragraph.appendChild(defContent);
